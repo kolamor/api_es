@@ -1,0 +1,64 @@
+{
+  "mappings": {
+    "properties": {
+      "price":    {
+        "type": "scaled_float",
+        "scaling_factor": 100
+      },
+      "location": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "resource": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "currency": { "type":  "keyword" },
+      "email":  { "type": "keyword" },
+      "name":   {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "latin_name": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "last_updated_at": {
+        "type": "date",
+        "format": "epoch_second"
+      },
+      "description": {
+        "type": "text"
+      },
+      "url": {
+        "type": "text",
+        "fields": {
+          "match": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      }
+    }
+  }
+}
