@@ -1,4 +1,4 @@
 # default configuration file
 
 app_name: 'Default app'
-database_uri : postgresql://kola:romromrom1@localhost:5432/demo
+database_uri : postgresql://kolamor:test@localhost:5432/test_api_es
