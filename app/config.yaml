@@ -1,0 +1,4 @@
+# default configuration file
+
+app_name: 'Default app'
+database_uri : postgresql://kola:romromrom1@localhost:5432/demo
