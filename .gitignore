@@ -4,6 +4,7 @@ logs/
 .idea/
 html.html
 *_config.yaml
+__pycache__
 /chunk_test/
 *.env
 venv
