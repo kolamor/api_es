@@ -1,0 +1,12 @@
+logs/
+/logs/
+*/__pycache__/
+.idea/
+html.html
+*_config.yaml
+/chunk_test/
+*.env
+venv
+.DS_Store
+*/.secret/*
+*.secret
