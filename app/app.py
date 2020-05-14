@@ -1,9 +1,9 @@
 import aiohttp_jinja2
 import aio_pika
 import asyncpgsa
+import asyncio
 import jinja2
 import logging
-import asyncio
 from aiohttp import web
 from .routes import setup_routes
 
@@ -38,4 +38,7 @@ async def on_shutdown(app):
     if app.get('connection_rmq', None):
         logger.info('on_shutdown connection_rmq')
         await app['connection_rmq'].close()
+        # aio_pika.connection:Closing AMQP connection None
+        # aio_pika.robust_connection:Connection to amqp://user:******@127.0.0.1/ closed. Reconnecting after 5 seconds.
+        # -- https://github.com/mosquito/aio-pika/issues/314
         logger.info('connection_rmq closed')
