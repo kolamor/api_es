@@ -1,5 +1,7 @@
 # default configuration file
 
 app_name: 'Default app'
+logging_level: DEBUG
 database_uri : postgresql://kolamor:test@localhost:5432/test_api_es
-connection_rmq : amqp://user:bitnami@127.0.0.1/
+start_connection_rmq: True
+connection_rmq_uri : amqp://user:bitnami@127.0.0.1/

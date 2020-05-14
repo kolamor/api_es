@@ -1,6 +1,7 @@
 import argparse
 import asyncio
 import aiohttp
+import logging
 from app.settings import load_config
 from app import create_app
 
@@ -18,6 +19,7 @@ parser.add_argument('--reload', action='store_true', help='Auto reload code on c
 parser.add_argument('-c', '--config', type=argparse.FileType('r'), 	help='Path to configuration file')
 
 args = parser.parse_args()
+config = load_config(args.config)
 app = create_app(config=load_config(args.config))
 
 if args.reload:
@@ -27,4 +29,5 @@ if args.reload:
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=getattr(logging, config.get('logging_level', 'DEBUG')))
     aiohttp.web.run_app(app, host=args.host, port=args.port)
