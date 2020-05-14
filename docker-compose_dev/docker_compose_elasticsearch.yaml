@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  elasticsearch:
+    image: elasticsearch:7.7.0
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+    network_mode: host
+
+volumes:
+  data01:
+    driver: local
