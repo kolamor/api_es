@@ -5,3 +5,6 @@ logging_level: DEBUG
 database_uri : postgresql://kolamor:test@localhost:5432/test_api_es
 start_connection_rmq: True
 connection_rmq_uri : amqp://user:bitnami@127.0.0.1/
+json_scheme_path: {
+  ElasticV1: "app/handlers/validation_json_templates/sсhema_v1.json"
+}

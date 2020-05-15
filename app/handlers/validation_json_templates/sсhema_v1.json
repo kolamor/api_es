@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "currency": {
+      "type": "number"
+    },
+    "description": {
+      "type": "string"
+    }
+  }
+}
