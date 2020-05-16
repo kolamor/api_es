@@ -7,6 +7,7 @@ import json
 import logging
 from aiohttp import web
 from .routes import setup_routes
+from .core.loader_scheme import Scheme, loader_scheme
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +32,7 @@ async def on_start(app):
     app['db'] = await asyncpgsa.create_pool(dsn=config['database_uri'])
     if config.get('start_connection_rmq', False):
         app['connection_rmq'] = await aio_pika.connect_robust(config['connection_rmq_uri'])
-    schema = await load_json_validation_scheme(config['json_scheme_path']['ElasticV1'])
-    app['json_scheme'] = {"ElasticV1": schema}
+    await loader_scheme(app=app, config=config)
 
 
 async def on_shutdown(app):
@@ -46,23 +46,3 @@ async def on_shutdown(app):
         # aio_pika.robust_connection:Connection to amqp://user:******@127.0.0.1/ closed. Reconnecting after 5 seconds.
         # -- https://github.com/mosquito/aio-pika/issues/314
         logger.info('connection_rmq closed')
-
-
-async def load_json_validation_scheme(path):
-    """
-    load json sheme from file, run_in_executor
-    :return: dict
-    """
-
-    loop = asyncio.get_event_loop()
-    s = await loop.run_in_executor(None, _load_json_file, path)
-    logging.debug(f"load json_file {s}")
-    return s
-
-
-def _load_json_file(path):
-    with open(path, 'r') as f:
-        config = json.loads(f.read())
-    return config
-
-
