@@ -8,3 +8,5 @@ connection_rmq_uri : amqp://user:bitnami@127.0.0.1/
 json_scheme_path: {
   ElasticV1: "app/handlers/validation_json_templates/sсhema_v1.json"
 }
+http_client_limit_TCPConnector: 0
+http_client_limit_per_host_TCPConnector: 0
