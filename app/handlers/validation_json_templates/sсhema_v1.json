@@ -6,6 +6,9 @@
     },
     "description": {
       "type": "string"
+    },
+    "_id": {
+      "type": "string"
     }
   }
 }

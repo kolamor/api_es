@@ -37,7 +37,7 @@ async def on_start(app):
     app['http_client'] = ClientSession(connector=TCPConnector(limit=config['http_client_limit_TCPConnector'],
                                                               limit_per_host=config['http_client_limit_per_host_TCPConnector']
                                                               ))
-    app['esearch'] = EsQuery(hosts=config.get('elasticsearch_host', None))
+    app['esearch'] = EsQuery(hosts=config.get('elasticsearch_host', None), index='test')
 
 
 async def on_shutdown(app):
