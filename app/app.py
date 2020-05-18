@@ -9,6 +9,7 @@ from aiohttp import web, ClientSession, TCPConnector
 from .routes import setup_routes
 from .core.loader_scheme import Scheme, loader_scheme
 from .core.es_query import EsQuery, BaseElasticsearchQuery
+from .core.rabbit_mq import start_processed
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +33,8 @@ async def on_start(app):
     config = app['config']
     app['db'] = await asyncpgsa.create_pool(dsn=config['database_uri'])
     if config.get('start_connection_rmq', False):
-        app['connection_rmq'] = await aio_pika.connect_robust(config['connection_rmq_uri'])
+        # app['connection_rmq'] = await aio_pika.connect_robust(config['connection_rmq_uri'])
+        await start_processed(app=app)
     await loader_scheme(app=app, config=config)
     app['http_client'] = ClientSession(connector=TCPConnector(limit=config['http_client_limit_TCPConnector'],
                                                               limit_per_host=config['http_client_limit_per_host_TCPConnector']
@@ -44,9 +46,12 @@ async def on_shutdown(app):
     logger.info('on_shutdown')
     await app['db'].close()
     logger.info('PSQL closed')
-    if app.get('connection_rmq', None):
+    if app.get('rabbit_connections', None):
         logger.info('on_shutdown connection_rmq')
-        await app['connection_rmq'].close()
+        # await app['connection_rmq'].close()
+        for worker in app['rabbit_connections']:
+            await worker._connection.close()
+            print(worker.name, 'close')
         # aio_pika.connection:Closing AMQP connection None
         # aio_pika.robust_connection:Connection to amqp://user:******@127.0.0.1/ closed. Reconnecting after 5 seconds.
         # -- https://github.com/mosquito/aio-pika/issues/314
