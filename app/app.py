@@ -50,8 +50,8 @@ async def on_shutdown(app):
         logger.info('on_shutdown connection_rmq')
         # await app['connection_rmq'].close()
         for worker in app['rabbit_connections']:
-            await worker._connection.close()
-            print(worker.name, 'close')
+            await worker.close()
+            # print(worker.name, 'close')
         # aio_pika.connection:Closing AMQP connection None
         # aio_pika.robust_connection:Connection to amqp://user:******@127.0.0.1/ closed. Reconnecting after 5 seconds.
         # -- https://github.com/mosquito/aio-pika/issues/314

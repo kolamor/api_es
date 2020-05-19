@@ -119,6 +119,9 @@ class Worker:
     def is_run(self):
         return self.__is_run
 
+    async def close(self):
+        await self._connection.close()
+
 
 async def start_processed(app):
     await asyncio.sleep(1)
