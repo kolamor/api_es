@@ -33,8 +33,8 @@ async def on_start(app):
     config = app['config']
     app['db'] = await asyncpgsa.create_pool(dsn=config['database_uri'])
     if config.get('start_connection_rmq', False):
-        # app['connection_rmq'] = await aio_pika.connect_robust(config['connection_rmq_uri'])
-        await start_processed(app=app)
+        app['queue_v2'] = asyncio.Queue()
+        asyncio.create_task(start_processed(app=app))
     await loader_scheme(app=app, config=config)
     app['http_client'] = ClientSession(connector=TCPConnector(limit=config['http_client_limit_TCPConnector'],
                                                               limit_per_host=config['http_client_limit_per_host_TCPConnector']
@@ -48,7 +48,6 @@ async def on_shutdown(app):
     logger.info('PSQL closed')
     if app.get('rabbit_connections', None):
         logger.info('on_shutdown connection_rmq')
-        # await app['connection_rmq'].close()
         for worker in app['rabbit_connections']:
             await worker.close()
             # print(worker.name, 'close')

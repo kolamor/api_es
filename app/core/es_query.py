@@ -8,6 +8,7 @@ logger = logging.getLogger(__name__)
 class NoSetDocumentId(Exception):
     pass
 
+
 class FbcInstanceElasticsearch:
     """
     Factory Singleton instance Elasticsearch

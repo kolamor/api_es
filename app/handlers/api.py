@@ -50,5 +50,9 @@ class ElasticV1(web.View):
 
 class ElasticV2(ElasticV1):
     async def save_storage(self, row):
-        res = await self.request.app['esearch'].save(row)
-        return res
+        queue = self.request.app.get('queue_v2')
+        if queue:
+            await queue.put(row)
+        else:
+            return 'Don\'t work'
+        return 'Ok'
